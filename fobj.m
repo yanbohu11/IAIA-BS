@@ -140,9 +140,26 @@ end
 % selected_MI = opt.matrix(idx, idx);
 % upper_tri = triu(selected_MI, 1);
 % mmi = sum(upper_tri(:));
-idx=bX==1;
+
+
+% idx=bX==1;
+% selected_MI = opt.matrix(idx, idx);
+% mmi = sum(selected_MI,'all')/2;
+
+
+% Average pairwise mutual information
+idx = (bX == 1);
 selected_MI = opt.matrix(idx, idx);
-mmi = sum(selected_MI,'all')/2;
+
+n = sum(idx);   % Number of selected bands
+
+if n <= 1
+    mmi = 0;
+else
+    upper_tri = triu(selected_MI, 1);
+    mmi = sum(upper_tri, 'all') / nchoosek(n, 2);
+end
+
 
 
 
