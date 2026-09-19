@@ -41,6 +41,9 @@ end
 
  while t<=Max_iter %for t = 1:Max_iter
      for i=1:N
+         % if t >= Max_iter
+         %     break;
+         % end
          [fitness(i),bX]=fobj(X(i,:),opt);
          Cost(i) = fitness(i);
          pBest_score(i) = Cost(i);
@@ -50,7 +53,7 @@ end
              Best_pos = pBest_pos(i,:);
              Best_score = pBest_score(i);
          end
-         Convergence_curve(1:t) = Best_score;
+         Convergence_curve(t) = Best_score;
      end
     
     RB=randn(N,dim);  % Brownian motion
@@ -126,6 +129,12 @@ end
           Flag4ub=X(i,:)>ub;
           Flag4lb=X(i,:)<lb;
           X(i,:)=(X(i,:).*(~(Flag4ub+Flag4lb)))+ub.*Flag4ub+lb.*Flag4lb;
+
+
+          % if t >= Max_iter
+          %     break;
+          % end
+
 
           [fitness(i),bX]=fobj(X(i,:),opt);
           Cost(i)=fitness(i);
@@ -264,11 +273,17 @@ end
        end
       
     % end
-    
+
     % for i=1:N
-     Flag4ub=X(i,:)>ub;
-     Flag4lb=X(i,:)<lb;
-     X(i,:)=(X(i,:).*(~(Flag4ub+Flag4lb)))+ub.*Flag4ub+lb.*Flag4lb;
+    Flag4ub=X(i,:)>ub;
+    Flag4lb=X(i,:)<lb;
+    X(i,:)=(X(i,:).*(~(Flag4ub+Flag4lb)))+ub.*Flag4ub+lb.*Flag4lb;
+
+    % if t >= Max_iter
+    %     break;
+    % end
+
+
 
      [fitness(i),bX]=fobj(X(i,:),opt);
      Cost(i)=fitness(i);   
@@ -285,9 +300,10 @@ end
      end
      Convergence_curve(t) = Best_score;
    % end
-     % disp(sum(Best_pos));
+   % disp(sum(Best_pos));
    end
  end
+
 end
 function o=Levy(d)
 beta=1.5;
